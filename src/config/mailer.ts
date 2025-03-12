@@ -1,5 +1,5 @@
 export const mailerConfig = {
-  host: 'smtp.ionos.fr', // SMTP au lieu de IMAP
+  host: 'smtp.ionos.fr',
   port: 465,
   secure: true,
   auth: {
