@@ -1,4 +1,4 @@
-# Express Mailer Server
+# Express Mailer Server 📧
 
 A simple backend server built with Express.js that provides an API for sending emails.
 Uses the SMTP protocol.
@@ -197,8 +197,7 @@ npm run format
 
 ## Contributors
 
-- **Quentin Sautière** - _Initial work and main developer_ - [SautiereQDev](https://github.com/SautiereQDev)
-- 
+- **Quentin Sautière** - Initial work and main developer - [SautiereQDev](https://github.com/SautiereQDev)
 ## Contributions
 
 Contributions are welcome! Please follow these steps:

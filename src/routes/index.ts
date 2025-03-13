@@ -1,10 +1,11 @@
-import { Request, Response, Router } from 'express';
-import { mailerInfo } from '@src/common/staticData';
-import { ZodError } from 'zod';
+import {Request, Response, Router} from 'express';
+import {mailerInfo} from '@src/common/staticData';
+import {ZodError} from 'zod';
 import limiter from '@src/midlewares/rateLimiter';
 import transporter from '@src/services/transporter';
-import { mailSchema } from '@src/utils/validator';
+import {mailSchema} from '@src/utils/validator';
 import emailTemplateService from '@src/services/emailTemplateService';
+import HttpStatusCodes from '@src/common/HttpStatusCodes';
 
 /******************************************************************************
                                 Variables
@@ -13,7 +14,7 @@ import emailTemplateService from '@src/services/emailTemplateService';
 const mailerRouter = Router();
 
 mailerRouter.get('/', (req, res) => {
-  res.status(200).send(mailerInfo);
+  res.status(HttpStatusCodes.OK).send(mailerInfo);
 });
 
 mailerRouter.post('/send', limiter, async (req: Request, res: Response): Promise<void> => {
@@ -31,13 +32,15 @@ mailerRouter.post('/send', limiter, async (req: Request, res: Response): Promise
       html: htmlContent,
     });
 
-    res.status(200).json({ message: 'Message envoyé' });
+    res.status(HttpStatusCodes.OK).json({ message: 'Message envoyé' });
   } catch (error: unknown) {
     if (error instanceof ZodError) {
-      res.status(400).json({ message: 'Données invalides', errors: error.issues });
+      res
+        .status(HttpStatusCodes.BAD_REQUEST)
+        .json({ message: 'Données invalides', errors: error.issues });
       return;
     }
-    res.status(500).json({ message: 'Erreur serveur' });
+    res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Erreur serveur' });
   }
 });
 

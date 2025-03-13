@@ -1,10 +1,11 @@
 import moduleAlias from 'module-alias';
-moduleAlias.addAlias('@src', __dirname);
-
 import logger from 'jet-logger';
 import ENV from '@src/common/ENV';
 
 import server from './server';
+
+moduleAlias.addAlias('@src', __dirname);
+
 /******************************************************************************
                                   Run
 ******************************************************************************/

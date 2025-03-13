@@ -1,15 +1,15 @@
 import morgan from 'morgan';
 import path from 'path';
 import helmet from 'helmet';
-import express, { Request, Response, NextFunction } from 'express';
+import express, {NextFunction, Request, Response} from 'express';
 
 import 'express-async-errors';
 
 import BaseRouter from '@src/routes';
 
-import ENV, { NodeEnvs } from '@src/common/ENV';
+import ENV, {NodeEnvs} from '@src/common/ENV';
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
-import { RouteError } from '@src/common/route-errors';
+import {RouteError} from '@src/common/route-errors';
 
 /******************************************************************************
                                 Setup
@@ -45,7 +45,7 @@ app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
   let status = HttpStatusCodes.BAD_REQUEST;
   if (err instanceof RouteError) {
     status = err.status;
-    res.status(status).json({ error: err.message });
+    res.status(status).json(err);
   }
   return next(err);
 });
