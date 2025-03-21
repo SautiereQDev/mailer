@@ -48,54 +48,6 @@ JET_LOGGER_TIMESTAMP=TRUE
 JET_LOGGER_FORMAT=LINE
 ```
 
-## Project Structure
-
-```plaintext
-./src
-├── common
-│ ├── ENV.js
-│ ├── ENV.ts
-│ ├── HttpStatusCodes.js
-│ ├── HttpStatusCodes.ts
-│ ├── route-errors.js
-│ ├── route-errors.ts
-│ ├── staticData.js
-│ └── staticData.ts
-├── config
-│ ├── mailer.js
-│ └── mailer.ts
-├── index.js
-├── index.ts
-├── midlewares
-│ ├── rateLimiter.js
-│ └── rateLimiter.ts
-├── routes
-│ ├── index.js
-│ └── index.ts
-├── scripts
-│ ├── build.js
-│ └── build.ts
-├── server.js
-├── server.ts
-├── services
-│ ├── emailTemplateService.js
-│ ├── emailTemplateService.ts
-│ ├── transporter.js
-│ └── transporter.ts
-├── utils
-│ ├── validator.js
-│ └── validator.ts
-└── views
-    └── emails
-        ├── confirmation.hbs
-        ├── contact.hbs
-        ├── layouts
-        │ └── main.hbs
-        └── partials
-            ├── footer.hbs
-            └── header.hbs
-```
-
 ## Usage
 
 ### Starting the server
