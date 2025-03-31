@@ -1,3 +1,5 @@
+![metrics](metrics.svg)
+
 # Express Mailer Server 📧
 
 A simple backend server built with Express.js that provides an API for sending emails.
