@@ -1,7 +1,4 @@
-const dotenv = require('dotenv');
-dotenv.config({
-  path: `.env.${process.env.NODE_ENV ?? 'production'}`,
-});
+const env = require('./src/config')
 
 module.exports = {
   apps: [
@@ -14,9 +11,9 @@ module.exports = {
       max_memory_restart: '300M',
       env: {
         NODE_ENV: 'production',
-        PORT: process.env.PORT || 8081,
+        PORT: env.PORT || 8081,
         HOST: '0.0.0.0',
-        EMAIL_PASSWORD: process.env.EMAIL_PASSWORD || 'password',
+        EMAIL_PASSWORD: env.EMAIL_PASSWORD || 'password',
       },
       env_production: {
         NODE_ENV: 'production',

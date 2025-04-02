@@ -1,19 +1,20 @@
 import morgan from 'morgan';
 import path from 'path';
 import helmet from 'helmet';
-import express, {NextFunction, Request, Response} from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 
 import 'express-async-errors';
 
 import BaseRouter from '@src/routes';
 
-import ENV, {NodeEnvs} from '@src/common/ENV';
+import { NodeEnvs } from '@src/common/ENV';
+import env from '@src/config';
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
-import {RouteError} from '@src/common/route-errors';
+import { RouteError } from '@src/common/route-errors';
 
 /******************************************************************************
-                                Setup
-******************************************************************************/
+ Setup
+ ******************************************************************************/
 
 const app = express();
 
@@ -25,14 +26,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Show routes called in console during development
-if (ENV.NodeEnv === NodeEnvs.Dev) {
+if (env.NODE_ENV === NodeEnvs.Dev) {
   app.use(morgan('dev'));
-}
-
-// Security
-if (ENV.NodeEnv === NodeEnvs.Production) {
-  // eslint-disable-next-line n/no-process-env
-  if (!process.env.DISABLE_HELMET) {
+} else if (env.NODE_ENV === NodeEnvs.Production) {
+  if (!env.DISABLE_HELMET) {
     app.use(helmet());
   }
 }
@@ -56,12 +53,11 @@ app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
 const viewsDir = path.join(__dirname, 'views');
 app.set('views', viewsDir);
 
-// Set static directory (js and css).
 const staticDir = path.join(__dirname, 'public');
 app.use(express.static(staticDir));
 
 /******************************************************************************
-                                Export default
-******************************************************************************/
+ Export default
+ ******************************************************************************/
 
 export default app;

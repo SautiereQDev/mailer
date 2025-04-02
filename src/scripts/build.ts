@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import shell from 'shelljs';
+import env from '@src/config';
 
 // Type assertion for shelljs to fix ESLint errors
 const sh = shell as {
@@ -11,7 +12,7 @@ const sh = shell as {
 };
 
 // Ensure environment setup before building
-const NODE_ENV = process.env.NODE_ENV ?? 'development';
+const NODE_ENV = env.NODE_ENV ?? 'development';
 const envPath = path.join(process.cwd(), `config/.env.${NODE_ENV}`);
 
 // Check if the environment file exists, create it if needed
@@ -34,8 +35,7 @@ sh.mkdir('-p', 'dist');
 console.log('Compiling TypeScript...');
 const tscResult = sh.exec('tsc --project tsconfig.prod.json --outDir dist');
 if (tscResult.code !== 0) {
-  console.error('Error: TypeScript compilation failed');
-  process.exit(1);
+  throw new Error('TypeScript compilation failed');
 }
 
 // Copy necessary non-TypeScript files

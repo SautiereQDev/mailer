@@ -1,6 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import Handlebars from 'handlebars';
+import env from '../config/config';
 
 export class EmailTemplateService {
   private readonly templatesDir: string;
@@ -10,7 +11,7 @@ export class EmailTemplateService {
   public constructor() {
     this.templatesDir = path.join(
       process.cwd(),
-      process.env.NODE_ENV === 'production' ? 'views/' : 'src/views/emails'
+      env.NODE_ENV === 'production' ? 'views/' : 'src/views/emails'
     );
 
     // Register helpers
@@ -27,12 +28,6 @@ export class EmailTemplateService {
       this.initialized = true;
     } catch (e: unknown) {
       throw new Error('Failed to initialize email templates: ' + JSON.stringify(e));
-    }
-  }
-
-  private checkInitialized(): void {
-    if (!this.initialized) {
-      throw new Error('EmailTemplateService must be initialized before use');
     }
   }
 
@@ -95,6 +90,12 @@ export class EmailTemplateService {
     const template = Handlebars.compile(content);
     this.cachedTemplates.set(name, template);
     return template;
+  }
+
+  private checkInitialized(): void {
+    if (!this.initialized) {
+      throw new Error('EmailTemplateService must be initialized before use');
+    }
   }
 }
 

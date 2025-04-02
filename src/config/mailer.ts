@@ -1,3 +1,5 @@
+import env from './config';
+
 export const mailerConfig = {
   host: 'smtp.ionos.fr',
   port: 465,
@@ -5,7 +7,7 @@ export const mailerConfig = {
   auth: {
     user: 'contact@quentinsautiere.com',
     // eslint-disable-next-line n/no-process-env
-    pass: process.env.EMAIL_PASSWORD,
+    pass: env.EMAIL_PASSWORD,
   },
   tls: {
     rejectUnauthorized: false,

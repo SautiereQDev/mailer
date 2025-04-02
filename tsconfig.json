@@ -19,7 +19,7 @@
   },
   "include": [
     "src/**/*.ts", "spec/**/*.ts",
-    "config.ts",
+    "src/config/config.ts",
     "src/scripts",
     "eslint.config.ts"
   ],

@@ -6,3 +6,6 @@ config.js
 
 .idea
 .vscode
+
+.env.development
+.env.production

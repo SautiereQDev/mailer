@@ -1,7 +1,8 @@
 import nodemailer from 'nodemailer';
 import mailerConfig from '@src/config/mailer';
+import env from '../config/config';
 
-if (!process.env.EMAIL_PASSWORD) {
+if (!env.EMAIL_PASSWORD) {
   throw new Error('EMAIL_PASSWORD is not defined');
 }
 
