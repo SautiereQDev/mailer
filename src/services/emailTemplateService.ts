@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import Handlebars from 'handlebars';
-import env from '../config/config';
+import env from '@src/config';
 
 export class EmailTemplateService {
   private readonly templatesDir: string;

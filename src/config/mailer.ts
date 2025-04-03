@@ -1,4 +1,4 @@
-import env from './config';
+import env from '@src/config';
 
 export const mailerConfig = {
   host: 'smtp.ionos.fr',
@@ -6,7 +6,7 @@ export const mailerConfig = {
   secure: true,
   auth: {
     user: 'contact@quentinsautiere.com',
-    // eslint-disable-next-line n/no-process-env
+
     pass: env.EMAIL_PASSWORD,
   },
   tls: {

@@ -45,6 +45,7 @@ sh.cp('-R', 'config', 'dist/config');
 sh.cp('-R', 'package.json', 'dist/package.json');
 sh.cp('-R', 'package-lock.json', 'dist/package-lock.json');
 sh.cp('-R', 'ecosystem.config.js', 'dist/ecosystem.config.js');
+sh.cp('-R', 'prisma', 'dist/prisma'); // Ajouter cette ligne
 
 // Create a simple start script
 const startScript = `#!/usr/bin/env node

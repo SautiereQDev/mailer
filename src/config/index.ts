@@ -2,12 +2,14 @@ import path from 'path';
 import moduleAlias from 'module-alias';
 import dotenv from 'dotenv';
 
+// eslint-disable-next-line n/no-process-env
 const NODE_ENV = process.env.NODE_ENV ?? 'development';
 const envPath = path.join(process.cwd(), `.env.${NODE_ENV}`);
 
 // Correction : passer un objet avec la propriété path
 dotenv.config({ path: envPath });
 
+// eslint-disable-next-line n/no-process-env
 if (!process.env) {
   console.warn(`Warning: Could not load ${envPath}. Using default environment variables.`);
 } else {
@@ -32,4 +34,6 @@ export default {
   JET_LOGGER_TIMESTAMP: process.env.JET_LOGGER_TIMESTAMP ?? 'TRUE',
   JET_LOGGER_FORMAT: process.env.JET_LOGGER_FORMAT ?? 'LINE',
   DISABLE_HELMET: process.env.DISABLE_HELMET === 'TRUE',
+  DATABASE_URL:
+    process.env.DATABASE_URL ?? `file:${process.env.DB_PATH ?? './data/apikeys.sqlite'}`,
 };

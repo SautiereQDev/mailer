@@ -1,8 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
-import 'express';
 import jwt from 'jsonwebtoken';
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
-import env from '@src/config/config';
+import env from '@src/config';
 
 /**
  * Middleware d'authentification pour les routes administratives

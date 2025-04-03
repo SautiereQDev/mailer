@@ -4,7 +4,7 @@ import HttpStatusCodes from '@src/common/HttpStatusCodes';
 
 const apiKeyAuth = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   // Récupération de la clé API (plusieurs méthodes possibles)
-  const apiKey = req.headers['x-api-key'] || (req.query.apiKey as string) || req.body?.apiKey;
+  const apiKey = (req.headers['x-api-key'] as string) ?? (req.query.apiKey as string);
 
   if (!apiKey) {
     res.status(HttpStatusCodes.UNAUTHORIZED).json({
