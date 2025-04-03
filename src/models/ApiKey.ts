@@ -9,15 +9,15 @@ export interface IApiKey {
   /** Human-readable name of the API key */
   name: string;
   /** Raw API key value (not stored long-term) */
-  key: string;
+  key?: string; // Rendu optionnel car non stocké en DB
   /** Hashed representation of the API key for secure storage */
   hashedKey: string;
   /** Optional expiration date */
-  expiresAt?: Date;
+  expiresAt?: Date | null;
   /** Creation timestamp */
   createdAt: Date;
   /** Last usage timestamp */
-  lastUsedAt?: Date;
+  lastUsedAt?: Date | null;
   /** ID of the entity owning this key */
   ownerId: string;
   /** Whether the key can be used for authentication */
@@ -43,29 +43,17 @@ export class ApiKeyService {
   public static generateApiKey(prefix = 'mail'): { rawKey: string; hashedKey: string } {
     const randomString = this.generateRandomString();
     const rawKey = `${prefix}_${randomString}`;
-    const hashedKey = crypto.createHash('sha256').update(rawKey).digest('base64');
-
+    // Utiliser digest('hex') pour être cohérent avec le reste du code
+    const hashedKey = crypto.createHash('sha256').update(rawKey).digest('hex');
     return { rawKey, hashedKey };
   }
 
   /**
-   * Validates if a provided raw API key matches a stored hash
-   * @param {string} rawKey - The API key provided during authentication
-   * @param {string} hashedKey - The stored hash to check against
-   * @returns {boolean} True if the key is valid
-   */
-  public static verifyApiKey(rawKey: string, hashedKey: string): boolean {
-    const computedHash = crypto.createHash('sha256').update(rawKey).digest('base64');
-    return computedHash === hashedKey;
-  }
-
-  /**
    * Generates a cryptographically secure random string
-   * @param {number} length - Number of bytes to generate (default: 32)
-   * @returns {string} Hex-encoded random string
+   * @returns {string} A random string encoded in base64
    * @private
    */
-  private static generateRandomString(length = 32): string {
-    return crypto.randomBytes(length).toString('base64');
+  private static generateRandomString(): string {
+    return crypto.randomBytes(24).toString('base64').replace(/[+/=]/g, '');
   }
 }
