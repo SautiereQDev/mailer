@@ -95,7 +95,7 @@ export class ApiKeyService {
     return apiKeys.map((apiKey) => {
       return {
         ...apiKey,
-        key: apiKey.key || `${apiKey.hashedKey.substring(0, 8)}...`, // Utiliser la valeur existante ou générer une version tronquée
+        key: apiKey.key ?? `${apiKey.hashedKey.substring(0, 8)}...`, // Utiliser la valeur existante ou générer une version tronquée
       };
     });
   }

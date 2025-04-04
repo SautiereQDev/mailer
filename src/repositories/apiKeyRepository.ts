@@ -1,9 +1,7 @@
 import { prisma } from '@src/config/prisma';
 import { IApiKey } from '../models/ApiKey';
-import { IApiKeyRepository } from './apiKeyRepository.interface';
-import isArray = Handlebars.Utils.isArray;
 
-export class ApiKeyRepository implements IApiKeyRepository {
+export class ApiKeyRepository {
   /**
    * Create a new API key entry
    * @param apiKey - The API key to create

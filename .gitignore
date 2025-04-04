@@ -9,3 +9,5 @@ config.js
 
 .env.development
 .env.production
+
+coverage

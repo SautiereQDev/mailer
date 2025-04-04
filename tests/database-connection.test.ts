@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { prisma } from '../src/config/prisma';
 
 describe('Database Connection', () => {
@@ -14,9 +14,9 @@ describe('Database Connection', () => {
 
   it('devrait se connecter à la base de données', async () => {
     // Exécuter une requête simple pour vérifier la connexion
-    const result = await prisma.$queryRaw`SELECT 1+1 as result`;
+    const result: number[] = await prisma.$queryRaw`SELECT 1+1 as result`;
     expect(Array.isArray(result)).toBe(true);
-    expect(result[0]).toHaveProperty('result', 2);
+    expect(result[0]).toHaveProperty('result', 2n);
   });
 
   it('devrait pouvoir accéder à la table apiKey', async () => {
