@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import { ApiKeyService as ApiKeyUtils, IApiKey } from '../models/ApiKey';
-import { IApiKeyRepository } from '../repositories/apiKeyRepository.interface';
 import { ApiKeyRepository } from '../repositories/apiKeyRepository';
+import { IApiKeyRepository } from '@src/repositories/IApiKeyRepository';
 
 /**
  * Service for managing API keys
@@ -12,7 +12,7 @@ export class ApiKeyService {
 
   /**
    * Allows injecting a different repository (useful for testing)
-   * @param {IApiKeyRepository} repository - The repository to set.
+   * @param repository - The repository to set.
    */
   public static setRepository(repository: IApiKeyRepository): void {
     this.repository = repository;

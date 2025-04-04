@@ -1,7 +1,8 @@
 import { prisma } from '@src/config/prisma';
 import { IApiKey } from '../models/ApiKey';
+import { IApiKeyRepository } from '@src/repositories/IApiKeyRepository';
 
-export class ApiKeyRepository {
+export class ApiKeyRepository implements IApiKeyRepository {
   /**
    * Create a new API key entry
    * @param apiKey - The API key to create
@@ -96,7 +97,7 @@ export class ApiKeyRepository {
    * Update the lastUsedAt timestamp for an API key
    * @param id - The ID of the API key to update
    * @param lastUsedAt - The timestamp to set
-   * @returns Promise resolving to true if update was successful
+   * @returns Promise resolving to true if update was successful.
    */
   public async updateLastUsed(id: string, lastUsedAt: Date): Promise<boolean> {
     try {
