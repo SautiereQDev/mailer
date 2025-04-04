@@ -40,7 +40,8 @@ export class ApiKeyService {
       createdAt: new Date(),
       ownerId,
       isActive: true,
-      expiresAt: expiresInDays ? new Date(Date.now() + expiresInDays * 86400000) : undefined,
+      expiresAt: expiresInDays ? new Date(Date.now() + expiresInDays * 86400000) : null,
+      lastUsedAt: null,
     };
 
     await this.repository.create(newApiKey);
@@ -88,6 +89,14 @@ export class ApiKeyService {
    * @returns {Promise<IApiKey[]>} - An array of API keys
    */
   public static async getApiKeysByOwnerId(ownerId: string): Promise<IApiKey[]> {
-    return await this.repository.findByOwnerId(ownerId);
+    const apiKeys = await this.repository.findByOwnerId(ownerId);
+
+    // Générer un affichage masqué pour la propriété 'key' à partir du hashedKey
+    return apiKeys.map((apiKey) => {
+      return {
+        ...apiKey,
+        key: apiKey.key || `${apiKey.hashedKey.substring(0, 8)}...`, // Utiliser la valeur existante ou générer une version tronquée
+      };
+    });
   }
 }
