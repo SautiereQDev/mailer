@@ -98,6 +98,7 @@ describe('Authentification des routes', () => {
 
       it('devrait accepter la requête avec un token admin valide', async () => {
         (adminAuth as any).mockImplementation((req: Request, res: Response, next: NextFunction) => {
+          // @ts-ignore
           req.user = { userId: 'admin123', isAdmin: true };
           next();
         });

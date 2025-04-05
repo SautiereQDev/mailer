@@ -3,7 +3,7 @@ import path from 'path';
 import shell from 'shelljs';
 import env from '@src/config';
 
-// Type assertion for shelljs to fix ESLint errors
+// Type assertion for shelljs
 const sh = shell as {
   mkdir: (options: string, dir: string) => { code: number };
   rm: (options: string, path: string) => { code: number };
@@ -33,25 +33,24 @@ sh.mkdir('-p', 'dist');
 
 // Compile TypeScript using production config
 console.log('Compiling TypeScript...');
-const tscResult = sh.exec('tsc --project tsconfig.prod.json --outDir dist');
+const tscResult = sh.exec('tsc --project tsconfig.prod.json');
 if (tscResult.code !== 0) {
   throw new Error('TypeScript compilation failed');
 }
 
 // Copy necessary non-TypeScript files
 console.log('Copying additional files...');
-sh.cp('-R', 'src/views/emails', 'dist/views/');
-sh.cp('-R', 'config', 'dist/config');
+sh.mkdir('-p', 'dist/views/emails');
+sh.mkdir('-p', 'dist/config');
+sh.mkdir('-p', 'dist/prisma');
+
+// Copy specific files and directories
+sh.cp('-R', 'src/views/emails/*', 'dist/views/emails/');
+sh.cp('-R', 'src/config/*', 'dist/config/');
+sh.cp('-R', 'prisma/*', 'dist/prisma/');
 sh.cp('-R', 'package.json', 'dist/package.json');
 sh.cp('-R', 'package-lock.json', 'dist/package-lock.json');
 sh.cp('-R', 'ecosystem.config.js', 'dist/ecosystem.config.js');
-sh.cp('-R', 'prisma', 'dist/prisma'); // Ajouter cette ligne
-
-// Create a simple start script
-const startScript = `#!/usr/bin/env node
-require('./config');
-require('./src/index.js');
-`;
-fs.writeFileSync(path.join(process.cwd(), 'dist', 'server.js'), startScript);
+sh.cp('-R', 'start-prod.js', 'dist/start-prod.js');
 
 console.log('Build completed successfully');

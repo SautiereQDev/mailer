@@ -15,7 +15,8 @@
         "src/*"
       ]
     },
-    "useUnknownInCatchVariables": false
+    "useUnknownInCatchVariables": false,
+    "resolveJsonModule": true
   },
   "ts-node": {
     "swc": true,
@@ -26,11 +27,13 @@
   "include": [
     "src/**/*.ts",
     "spec/**/*.ts",
-    "src/config/config.ts",
+    "src/config/index.ts",
     "src/scripts",
     "eslint.config.ts"
   ],
   "exclude": [
-    "src/public/*"
+    "src/public/*",
+    "dist",
+    "node_modules"
   ]
 }

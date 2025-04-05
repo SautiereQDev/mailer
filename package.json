@@ -7,7 +7,8 @@
     "dev": "ts-node src/index.ts",
     "dev:hot": "nodemon --exec \"npm run dev\" --watch src --ext .ts",
     "lint": "eslint --fix --ext .ts src",
-    "start": "node server.js",
+    "start": "NODE_OPTIONS=\"--require=ts-node/register\" node src/index.ts",
+    "start:prod": "node index.js",
     "type-check": "tsc --noEmit",
     "test": "vitest ."
   },
@@ -15,6 +16,7 @@
     "node": ">=23.0.0"
   },
   "dependencies": {
+    "module-alias": "^2.2.3",
     "@prisma/client": "^6.5.0",
     "cookie-parser": "^1.4.7",
     "dayjs": "^1.11.13",
@@ -31,7 +33,6 @@
     "jet-validators": "^1.3.2",
     "jsonfile": "^6.1.0",
     "jsonwebtoken": "^9.0.2",
-    "module-alias": "^2.2.3",
     "morgan": "^1.10.0",
     "nodemailer": "^6.10.0",
     "shelljs": "^0.9.1",
