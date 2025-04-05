@@ -5,7 +5,7 @@ import express, { NextFunction, Request, Response } from 'express';
 
 import 'express-async-errors';
 
-import BaseRouter from '@src/routes';
+import { baseRoutes, apiKeysRoutes } from '@src/routes';
 
 import { NodeEnvs } from '@src/common/ENV';
 import env from '@src/config';
@@ -35,7 +35,8 @@ if (env.NODE_ENV === NodeEnvs.Dev) {
 }
 
 // Add APIs, must be after middleware
-app.use('/mailer', BaseRouter);
+app.use('/mailer', baseRoutes);
+app.use('/mailer/api-keys', apiKeysRoutes);
 
 // Add error handler
 app.use((err: Error, _: Request, res: Response, next: NextFunction) => {

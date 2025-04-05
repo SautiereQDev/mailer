@@ -3,10 +3,10 @@ import { ApiKeyService } from '../services/apiKeyService';
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
 import adminAuth from '../midlewares/adminAuth';
 
-const router = Router();
+export const apiKeysRoutes = Router();
 
 // Création d'une clé API (restreint aux administrateurs)
-router.post('/', adminAuth, async (req: Request, res: Response): Promise<void> => {
+apiKeysRoutes.post('/', adminAuth, async (req: Request, res: Response): Promise<void> => {
   try {
     const { name, ownerId, expiresInDays } = req.body as {
       name: string;
@@ -36,7 +36,7 @@ router.post('/', adminAuth, async (req: Request, res: Response): Promise<void> =
 });
 
 // Route pour révoquer une clé API
-router.delete('/:id', adminAuth, async (req: Request, res: Response): Promise<void> => {
+apiKeysRoutes.delete('/:id', adminAuth, async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
     const success = await ApiKeyService.revokeApiKey(id);
@@ -59,4 +59,24 @@ router.delete('/:id', adminAuth, async (req: Request, res: Response): Promise<vo
   }
 });
 
-export default router;
+apiKeysRoutes.get(
+  '/owner/:ownerId',
+  adminAuth,
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { ownerId } = req.params;
+      const apiKeys = await ApiKeyService.getApiKeysByOwnerId(ownerId);
+
+      res.status(HttpStatusCodes.OK).json({
+        apiKeys,
+      });
+    } catch (error) {
+      res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).json({
+        message: 'Erreur lors de la récupération des clés API',
+        error: error instanceof Error ? error.message : 'Erreur inconnue',
+      });
+    }
+  }
+);
+
+export default apiKeysRoutes;
