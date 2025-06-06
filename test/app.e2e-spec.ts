@@ -30,7 +30,7 @@ describe('Contact API (e2e)', () => {
       .compile();
 
     app = moduleFixture.createNestApplication();
-    
+
     // Configure global validation pipe to match main.ts
     app.useGlobalPipes(
       new ValidationPipe({
@@ -172,7 +172,7 @@ describe('Contact API (e2e)', () => {
 
       it('should handle special characters in contact data', () => {
         const specialCharData = {
-          nom: 'Jean-François O\'Connor',
+          nom: "Jean-François O'Connor",
           email: 'jean.francois@example.com',
           message: 'Message with special chars: é, è, à, ç, ñ, 中文',
           source: 'https://example.com/path?param=value&other=123',
@@ -187,10 +187,11 @@ describe('Contact API (e2e)', () => {
             expect(mockMailerService.sendMail).toHaveBeenCalledWith({
               to: 'jean.francois@example.com',
               cc: 'test@example.com',
-              subject: 'Nouveau message de Jean-François O\'Connor (Société & Co.)',
+              subject:
+                "Nouveau message de Jean-François O'Connor (Société & Co.)",
               template: 'contact',
               context: {
-                nom: 'Jean-François O\'Connor',
+                nom: "Jean-François O'Connor",
                 email: 'jean.francois@example.com',
                 message: 'Message with special chars: é, è, à, ç, ñ, 中文',
                 source: 'https://example.com/path?param=value&other=123',
@@ -232,7 +233,9 @@ describe('Contact API (e2e)', () => {
           .send(invalidData)
           .expect(HttpStatus.BAD_REQUEST)
           .expect((res) => {
-            expect(res.body.message).toContain('Le nom ne peut excéder 100 caractères');
+            expect(res.body.message).toContain(
+              'Le nom ne peut excéder 100 caractères',
+            );
           });
       });
 
@@ -243,7 +246,9 @@ describe('Contact API (e2e)', () => {
           .send(invalidData)
           .expect(HttpStatus.BAD_REQUEST)
           .expect((res) => {
-            expect(res.body.message).toContain("L'adresse e-mail est obligatoire");
+            expect(res.body.message).toContain(
+              "L'adresse e-mail est obligatoire",
+            );
           });
       });
 
@@ -254,7 +259,9 @@ describe('Contact API (e2e)', () => {
           .send(invalidData)
           .expect(HttpStatus.BAD_REQUEST)
           .expect((res) => {
-            expect(res.body.message).toContain("L'adresse e-mail n'est pas valide");
+            expect(res.body.message).toContain(
+              "L'adresse e-mail n'est pas valide",
+            );
           });
       });
 
@@ -276,12 +283,17 @@ describe('Contact API (e2e)', () => {
           .send(invalidData)
           .expect(HttpStatus.BAD_REQUEST)
           .expect((res) => {
-            expect(res.body.message).toContain('Le message ne peut excéder 2000 caractères');
+            expect(res.body.message).toContain(
+              'Le message ne peut excéder 2000 caractères',
+            );
           });
       });
 
       it('should return 400 when source is not a valid URL', () => {
-        const invalidData = { ...validContactData, source: 'not-a-url' };
+        const invalidData = {
+          ...validContactData,
+          source: 'invalid url without protocol',
+        };
         return request(app.getHttpServer())
           .post('/contact')
           .send(invalidData)
@@ -299,18 +311,25 @@ describe('Contact API (e2e)', () => {
           .send(invalidData)
           .expect(HttpStatus.BAD_REQUEST)
           .expect((res) => {
-            expect(res.body.message).toContain('Le lien ne peut excéder 500 caractères');
+            expect(res.body.message).toContain(
+              'Le lien ne peut excéder 500 caractères',
+            );
           });
       });
 
       it('should return 400 when entreprise exceeds 100 characters', () => {
-        const invalidData = { ...validContactData, entreprise: 'A'.repeat(101) };
+        const invalidData = {
+          ...validContactData,
+          entreprise: 'A'.repeat(101),
+        };
         return request(app.getHttpServer())
           .post('/contact')
           .send(invalidData)
           .expect(HttpStatus.BAD_REQUEST)
           .expect((res) => {
-            expect(res.body.message).toContain("Le nom de l'entreprise ne peut excéder 100 caractères");
+            expect(res.body.message).toContain(
+              "Le nom de l'entreprise ne peut excéder 100 caractères",
+            );
           });
       });
 
@@ -319,7 +338,7 @@ describe('Contact API (e2e)', () => {
           nom: '',
           email: 'invalid-email',
           message: '',
-          source: 'not-a-url',
+          source: 'invalid url without protocol',
           entreprise: 'A'.repeat(101),
         };
         return request(app.getHttpServer())
@@ -347,7 +366,9 @@ describe('Contact API (e2e)', () => {
 
     describe('Server errors', () => {
       it('should return 500 when mailer service fails', () => {
-        mockMailerService.sendMail.mockRejectedValue(new Error('SMTP connection failed'));
+        mockMailerService.sendMail.mockRejectedValue(
+          new Error('SMTP connection failed'),
+        );
 
         return request(app.getHttpServer())
           .post('/contact')
@@ -356,7 +377,9 @@ describe('Contact API (e2e)', () => {
       });
 
       it('should return 500 when mailer service throws custom error', () => {
-        mockMailerService.sendMail.mockRejectedValue(new Error('Template not found'));
+        mockMailerService.sendMail.mockRejectedValue(
+          new Error('Template not found'),
+        );
 
         return request(app.getHttpServer())
           .post('/contact')
@@ -414,9 +437,7 @@ describe('Contact API (e2e)', () => {
 
   describe('Health check', () => {
     it('should respond to root path', () => {
-      return request(app.getHttpServer())
-        .get('/')
-        .expect(HttpStatus.NOT_FOUND); // Since we don't have a root controller
+      return request(app.getHttpServer()).get('/').expect(HttpStatus.NOT_FOUND); // Since we don't have a root controller
     });
   });
 
@@ -451,6 +472,13 @@ describe('Contact API (e2e)', () => {
     });
 
     it('should handle various valid URL formats in source', async () => {
+      const baseData = {
+        nom: 'John Doe',
+        email: 'john.doe@example.com',
+        message: 'This is a test message',
+        source: 'https://example.com',
+      };
+
       const validUrls = [
         'https://example.com',
         'http://localhost:3000',
@@ -460,7 +488,7 @@ describe('Contact API (e2e)', () => {
       ];
 
       for (const source of validUrls) {
-        const data = { ...validContactData, source };
+        const data = { ...baseData, source };
         await request(app.getHttpServer())
           .post('/contact')
           .send(data)
