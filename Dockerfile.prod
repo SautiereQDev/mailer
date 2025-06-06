@@ -1,0 +1,37 @@
+# Image de production pour NestJS + Mailer
+FROM node:23-alpine AS builder
+
+WORKDIR /usr/src/app
+
+# Copier package.json et package-lock.json
+COPY package*.json ./
+
+# Installer les dépendances de production
+RUN npm install --production=false
+
+# Copier le reste du code
+COPY . .
+
+# Compiler le projet NestJS
+RUN npm run build
+
+# Stage final
+FROM node:23-alpine AS production
+
+WORKDIR /usr/src/app
+
+# Copier uniquement les dépendances de production
+COPY package*.json ./
+RUN npm install --production
+
+# Copier les fichiers compilés
+COPY --from=builder /usr/src/app/dist ./dist
+
+# Copier le fichier .env (ou vous pouvez monter en volume en prod)
+COPY .env .
+
+# Exposer le port
+EXPOSE 3000
+
+# Lancer l'application
+CMD ["node", "dist/main.js"]

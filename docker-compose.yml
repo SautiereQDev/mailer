@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  # Service de développement avec MailHog
+  app-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: nestjs-mailer-dev
+    ports:
+      - '3000:3000'
+    environment:
+      # Chargement en local du .env ou variables directement ici
+      - NODE_ENV=development
+      - MAIL_HOST=mailhog
+      - MAIL_PORT=1025
+      - MAIL_USER=
+      - MAIL_PASSWORD=
+      - MAIL_FROM_NAME="Site Web Contact (Dev)"
+      - MAIL_FROM_EMAIL=no-reply@localhost
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - mailhog
+
+  # Service MailHog pour capturer les mails en dev
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: mailhog
+    ports:
+      - '8025:8025'   # Interface web
+      - '1025:1025'   # SMTP
+
+  # Service de production (sans MailHog)
+  app-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: nestjs-mailer-prod
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV=production
+      - MAIL_HOST=${MAIL_HOST}
+      - MAIL_PORT=${MAIL_PORT}
+      - MAIL_USER=${MAIL_USER}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}
+      - MAIL_FROM_NAME=${MAIL_FROM_NAME}
+      - MAIL_FROM_EMAIL=${MAIL_FROM_EMAIL}
+    volumes:
+      - .env:/usr/src/app/.env:ro
+    restart: unless-stopped

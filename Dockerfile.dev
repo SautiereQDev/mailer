@@ -1,0 +1,23 @@
+# Image de développement pour NestJS + Mailer
+FROM node:23-alpine AS development
+
+# Définir le répertoire de travail
+WORKDIR /usr/src/app
+
+# Copier package.json et package-lock.json
+COPY package*.json ./
+
+# Installer les dépendances
+RUN npm install
+
+# Copier le reste du code
+COPY . .
+
+# Installer les dépendances globales si nécessaire (par ex. ts-node)
+RUN npm install -g @nestjs/cli
+
+# Exposer le port de l'application et de MailHog si besoin
+EXPOSE 3000
+
+# Commande par défaut pour démarrage en mode dev avec watch
+CMD ["npm", "run", "start:dev"]nest new project-name
