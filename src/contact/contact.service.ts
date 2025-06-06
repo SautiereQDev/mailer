@@ -28,7 +28,7 @@ export class ContactService {
       await this.mailerService.sendMail({
         to: email, // On envoie une confirmation au contact
         cc: process.env.MAIL_FROM_EMAIL, // On s'envoie une copie
-        subject: `Nouveau message de ${nom} ${entreprise ? `(${entreprise})` : ''}`,
+        subject: `Nouveau message de ${nom} ${entreprise && entreprise.trim() !== '' ? `(${entreprise})` : ''}`,
         template: 'contact', // nom du fichier .hbs sans extension
         context,
       });

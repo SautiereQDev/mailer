@@ -25,6 +25,7 @@ export class ContactDto {
   @MaxLength(2000, { message: 'Le message ne peut excéder 2000 caractères' })
   message: string;
 
+  @IsNotEmpty({ message: 'Le lien est obligatoire' })
   @IsUrl({ require_tld: false }, { message: "Le lien n'est pas valide" })
   @MaxLength(500, { message: 'Le lien ne peut excéder 500 caractères' })
   source: string;
