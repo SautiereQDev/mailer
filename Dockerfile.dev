@@ -20,4 +20,4 @@ RUN npm install -g @nestjs/cli
 EXPOSE 3000
 
 # Commande par défaut pour démarrage en mode dev avec watch
-CMD ["npm", "run", "start:dev"]nest new project-name
+CMD ["npm", "run", "start:dev"]
