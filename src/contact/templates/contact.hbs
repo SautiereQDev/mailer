@@ -1,7 +1,6 @@
-<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8" />
+    <meta charset='UTF-8' />
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -58,26 +57,29 @@
     </style>
   </head>
   <body>
-    <div class="container">
-      <div class="header">
+    <div class='container'>
+      <div class='header'>
         <h2>Nouveau message de contact</h2>
       </div>
-      <div class="content">
-        <p><span class="field-label">Nom :</span> <span class="field-value">{{nom}}</span></p>
+      <div class='content'>
+        <p><span class='field-label'>Nom :</span>
+          <span class='field-value'>{{nom}}</span></p>
         {{#if entreprise}}
-        <p><span class="field-label">Entreprise :</span> <span class="field-value">{{entreprise}}</span></p>
+          <p><span class='field-label'>Entreprise :</span>
+            <span class='field-value'>{{entreprise}}</span></p>
         {{/if}}
-        <p><span class="field-label">Adresse e-mail :</span> <span class="field-value">{{email}}</span></p>
-        <p><span class="field-label">Message :</span></p>
-        <div class="message-box">
+        <p><span class='field-label'>Adresse e-mail :</span>
+          <span class='field-value'>{{email}}</span></p>
+        <p><span class='field-label'>Message :</span></p>
+        <div class='message-box'>
           <p>{{message}}</p>
         </div>
-        <div class="meta-info">
+        <div class='meta-info'>
           <p>Date : {{date}}</p>
           <p>Source : {{source}}</p>
         </div>
       </div>
-      <div class="footer">
+      <div class='footer'>
         <p>Message reçu via le formulaire de contact</p>
       </div>
     </div>

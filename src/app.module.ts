@@ -36,7 +36,7 @@ import { ContactModule } from './contact/contact.module';
                   pass: config.get<string>('MAIL_PASSWORD'),
                 },
                 debug: true,
-                logger: true
+                logger: true,
               },
           defaults: {
             from: `"${config.get<string>('MAIL_FROM_NAME')}" <${config.get<string>('MAIL_FROM_EMAIL')}>`,

@@ -63,9 +63,13 @@ describe('ContactController', () => {
     it('should successfully send contact email with entreprise field', async () => {
       mockContactService.sendContactEmail.mockResolvedValue(undefined);
 
-      const result = await controller.receiveContact(validContactDtoWithEntreprise);
+      const result = await controller.receiveContact(
+        validContactDtoWithEntreprise,
+      );
 
-      expect(service.sendContactEmail).toHaveBeenCalledWith(validContactDtoWithEntreprise);
+      expect(service.sendContactEmail).toHaveBeenCalledWith(
+        validContactDtoWithEntreprise,
+      );
       expect(service.sendContactEmail).toHaveBeenCalledTimes(1);
       expect(result).toEqual({
         success: true,
@@ -77,7 +81,9 @@ describe('ContactController', () => {
       const error = new Error('Email service error');
       mockContactService.sendContactEmail.mockRejectedValue(error);
 
-      await expect(controller.receiveContact(validContactDto)).rejects.toThrow(error);
+      await expect(controller.receiveContact(validContactDto)).rejects.toThrow(
+        error,
+      );
       expect(service.sendContactEmail).toHaveBeenCalledWith(validContactDto);
       expect(service.sendContactEmail).toHaveBeenCalledTimes(1);
     });
@@ -86,7 +92,9 @@ describe('ContactController', () => {
       const customError = new Error('SMTP connection failed');
       mockContactService.sendContactEmail.mockRejectedValue(customError);
 
-      await expect(controller.receiveContact(validContactDto)).rejects.toThrow('SMTP connection failed');
+      await expect(controller.receiveContact(validContactDto)).rejects.toThrow(
+        'SMTP connection failed',
+      );
     });
   });
 });

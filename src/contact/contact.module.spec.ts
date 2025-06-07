@@ -61,10 +61,10 @@ describe('ContactModule', () => {
   it('should inject ContactService into ContactController', () => {
     const controller = module.get<ContactController>(ContactController);
     const service = module.get<ContactService>(ContactService);
-    
+
     expect(controller).toBeDefined();
     expect(service).toBeDefined();
-    
+
     // Verify that the service is properly injected
     expect(controller['contactService']).toBe(service);
   });

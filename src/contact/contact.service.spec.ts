@@ -85,7 +85,9 @@ describe('ContactService', () => {
           source: 'https://example.com',
         },
       });
-      expect(logger.log).toHaveBeenCalledWith('E-mail de contact envoyé pour john.doe@example.com');
+      expect(logger.log).toHaveBeenCalledWith(
+        'E-mail de contact envoyé pour john.doe@example.com',
+      );
     });
 
     it('should send email successfully with entreprise field', async () => {
@@ -106,7 +108,9 @@ describe('ContactService', () => {
           entreprise: 'Test Company',
         },
       });
-      expect(logger.log).toHaveBeenCalledWith('E-mail de contact envoyé pour john.doe@example.com');
+      expect(logger.log).toHaveBeenCalledWith(
+        'E-mail de contact envoyé pour john.doe@example.com',
+      );
     });
 
     it('should not include entreprise in context when entreprise is empty string', async () => {
@@ -174,8 +178,10 @@ describe('ContactService', () => {
       const error = new Error('SMTP connection failed');
       mockMailerService.sendMail.mockRejectedValue(error);
 
-      await expect(service.sendContactEmail(baseContactDto)).rejects.toThrow(error);
-      
+      await expect(service.sendContactEmail(baseContactDto)).rejects.toThrow(
+        error,
+      );
+
       expect(logger.error).toHaveBeenCalledWith(
         "Erreur lors de l'envoi du mail de contact",
         error.stack,
@@ -186,8 +192,10 @@ describe('ContactService', () => {
       const error = 'String error';
       mockMailerService.sendMail.mockRejectedValue(error);
 
-      await expect(service.sendContactEmail(baseContactDto)).rejects.toEqual(error);
-      
+      await expect(service.sendContactEmail(baseContactDto)).rejects.toEqual(
+        error,
+      );
+
       expect(logger.error).toHaveBeenCalledWith(
         "Erreur lors de l'envoi du mail de contact",
         error,
@@ -197,7 +205,7 @@ describe('ContactService', () => {
     it('should handle special characters in contact data', async () => {
       mockMailerService.sendMail.mockResolvedValue(undefined);
       const specialCharContactDto: ContactDto = {
-        nom: 'Jean-François O\'Connor',
+        nom: "Jean-François O'Connor",
         email: 'jean.francois@example.com',
         message: 'Message with special chars: é, è, à, ç, ñ, 中文',
         source: 'https://example.com/path?param=value&other=123',
@@ -209,10 +217,10 @@ describe('ContactService', () => {
       expect(mailerService.sendMail).toHaveBeenCalledWith({
         to: 'jean.francois@example.com',
         cc: 'admin@example.com',
-        subject: 'Nouveau message de Jean-François O\'Connor (Société & Co.)',
+        subject: "Nouveau message de Jean-François O'Connor (Société & Co.)",
         template: 'contact',
         context: {
-          nom: 'Jean-François O\'Connor',
+          nom: "Jean-François O'Connor",
           email: 'jean.francois@example.com',
           message: 'Message with special chars: é, è, à, ç, ñ, 中文',
           source: 'https://example.com/path?param=value&other=123',

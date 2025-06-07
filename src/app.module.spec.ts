@@ -49,27 +49,27 @@ describe('AppModule', () => {
 
   it('should configure mailer with development settings when NODE_ENV is not production', async () => {
     process.env.NODE_ENV = 'development';
-    
+
     const testModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
 
     const configService = testModule.get<ConfigService>(ConfigService);
     expect(configService).toBeDefined();
-    
+
     await testModule.close();
   });
 
   it('should configure mailer with production settings when NODE_ENV is production', async () => {
     process.env.NODE_ENV = 'production';
-    
+
     const testModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
 
     const configService = testModule.get<ConfigService>(ConfigService);
     expect(configService).toBeDefined();
-    
+
     await testModule.close();
   });
 });

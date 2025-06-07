@@ -31,15 +31,17 @@ async function bootstrap() {
     );
 
     const port = configService.get<number>('APPLICATION_PORT') || 3001;
-    
+
     // Log de démarrage
     logger.log(`Application environment: ${process.env.NODE_ENV}`);
-    logger.log(`Mail configuration: ${JSON.stringify({
-      host: configService.get('MAIL_HOST'),
-      port: configService.get('MAIL_PORT'),
-      from: configService.get('MAIL_FROM_EMAIL'),
-    })}`);
-    
+    logger.log(
+      `Mail configuration: ${JSON.stringify({
+        host: configService.get('MAIL_HOST'),
+        port: configService.get('MAIL_PORT'),
+        from: configService.get('MAIL_FROM_EMAIL'),
+      })}`,
+    );
+
     await app.listen(port, '0.0.0.0');
     logger.log(`Application démarrée sur le port ${port}`);
   } catch (error) {

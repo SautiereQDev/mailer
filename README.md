@@ -1,98 +1,148 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Contact Form Mailer Service
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A robust NestJS-based email service designed to handle contact form submissions. This service provides a secure and reliable way to process contact form data and send emails using SMTP servers.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 🚀 Features
 
-## Description
+- **Contact Form Processing**: Handle contact form submissions via REST API
+- **Email Templates**: Handlebars-based email templates for professional-looking emails
+- **SMTP Support**: Compatible with various SMTP providers (IONOS, Gmail, etc.)
+- **Docker Support**: Development and production Docker configurations
+- **Development Environment**: Includes MailHog for local email testing
+- **Production Ready**: Secure configuration for production deployment
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 🛠 Tech Stack
 
-## Project setup
+- NestJS
+- TypeScript
+- Docker & Docker Compose
+- NodeMailer
+- Handlebars (for email templates)
+- MailHog (for development)
 
-```bash
-$ npm install
+## 📋 Prerequisites
+
+- Node.js (v20 or later)
+- Docker & Docker Compose
+- SMTP server credentials
+
+## 🔧 Configuration
+
+### Environment Variables
+
+Create a `.env` file in the root directory with the following variables:
+
+```env
+# Application
+APPLICATION_PORT=3001
+
+# SMTP Configuration
+MAIL_HOST=your.smtp.server
+MAIL_PORT=465
+MAIL_USER=your@email.com
+MAIL_PASSWORD=your_password
+MAIL_FROM_NAME="Your Name"
+MAIL_FROM_EMAIL=your@email.com
 ```
 
-## Compile and run the project
+## 🚀 Getting Started
+
+### Development
 
 ```bash
-# development
-$ npm run start
+# Start development environment with MailHog
+docker-compose up app-dev
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+# Access MailHog interface
+http://localhost:8025
 ```
 
-## Run tests
+### Production
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+# Start production service
+docker-compose up -d app-prod
 ```
 
-## Deployment
+## 📝 API Documentation
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+### Send Contact Form
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+```http
+POST /contact
+
+{
+  "nom": "John Doe",
+  "email": "john@example.com",
+  "message": "Hello, I would like to get in touch.",
+  "entreprise": "Company Name", // Optional
+  "source": "https://yourwebsite.com" // Source of the contact form
+}
+```
+
+## 📧 Email Template
+
+The service uses a professional email template that includes:
+
+- Contact name and email
+- Company name (if provided)
+- Message content
+- Source of the contact form
+- Timestamp of submission
+
+## 🔒 Security Features
+
+- CORS protection
+- Input validation
+- SSL/TLS email encryption
+- Rate limiting (optional)
+
+## 🐳 Docker Configuration
+
+The project includes two Docker configurations:
+
+- `Dockerfile.dev`: Development environment with hot-reload
+- `Dockerfile.prod`: Production-optimized build
+
+## 📁 Project Structure
+
+```
+├── src/
+│   ├── contact/
+│   │   ├── templates/    # Email templates
+│   │   ├── dto/         # Data transfer objects
+│   │   ├── contact.service.ts
+│   │   └── contact.controller.ts
+│   └── app.module.ts
+├── docker-compose.yml
+├── Dockerfile.dev
+└── Dockerfile.prod
+```
+
+## ⚙️ Development
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+# Install dependencies
+npm install
+
+# Run tests
+npm run test
+
+# Run in development
+npm run start:dev
+
+# Build for production
+npm run build
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## 🤝 Contributing
 
-## Resources
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
 
-Check out a few resources that may come in handy when working with NestJS:
+## 📄 License
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+This project is licensed under the MIT License - see the LICENSE file for details.
