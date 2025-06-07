@@ -21,7 +21,7 @@ import { BlacklistGuard } from './blacklist/blacklist.guard';
       useFactory: (config: ConfigService) => [
         {
           ttl: 60000, // Time window (1 minute)
-          limit: 20, // Max 20 requests per IP per minute
+          limit: 1000, // Max 1000 requests per IP per minute
         },
       ],
     }),
