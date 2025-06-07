@@ -1,4 +1,10 @@
-import { Injectable, CanActivate, ExecutionContext, HttpException, HttpStatus } from '@nestjs/common';
+import {
+  Injectable,
+  CanActivate,
+  ExecutionContext,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { BlacklistService } from './blacklist.service';
 
 @Injectable()
@@ -10,13 +16,17 @@ export class BlacklistGuard implements CanActivate {
     const ip = request.ip || request.connection.remoteAddress;
 
     if (this.blacklistService.isBlacklisted(ip)) {
-      throw new HttpException({
-        status: HttpStatus.FORBIDDEN,
-        error: 'Access denied: Your IP has been blocked due to suspicious activity',
-        remainingAttempts: 0,
-      }, HttpStatus.FORBIDDEN);
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error:
+            'Access denied: Your IP has been blocked due to suspicious activity',
+          remainingAttempts: 0,
+        },
+        HttpStatus.FORBIDDEN,
+      );
     }
 
     return true;
   }
-} 
+}

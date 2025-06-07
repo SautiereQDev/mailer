@@ -5,4 +5,4 @@ import { BlacklistService } from './blacklist.service';
   providers: [BlacklistService],
   exports: [BlacklistService],
 })
-export class BlacklistModule {} 
+export class BlacklistModule {}

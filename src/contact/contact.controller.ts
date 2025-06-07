@@ -35,28 +35,39 @@ export class ContactController {
       errorHttpStatusCode: HttpStatus.BAD_REQUEST,
     }),
   )
-  async receiveContact(@Body() contactDto: ContactDto, @Req() request: Request) {
+  async receiveContact(
+    @Body() contactDto: ContactDto,
+    @Req() request: Request,
+  ) {
     try {
       await this.contactService.sendContactEmail(contactDto);
       return { success: true, message: 'E-mail envoyé avec succès' };
     } catch (error) {
       const ip = request.socket.remoteAddress || '0.0.0.0';
       const isNowBlocked = this.blacklistService.recordFailedAttempt(ip);
-      const remainingAttempts = this.MAX_ATTEMPTS - this.blacklistService.getFailedAttempts(ip);
+      const remainingAttempts =
+        this.MAX_ATTEMPTS - this.blacklistService.getFailedAttempts(ip);
 
       if (isNowBlocked) {
-        throw new HttpException({
-          status: HttpStatus.FORBIDDEN,
-          error: 'Votre IP a été bloquée en raison de trop nombreuses tentatives échouées',
-          remainingAttempts: 0,
-        }, HttpStatus.FORBIDDEN);
+        throw new HttpException(
+          {
+            status: HttpStatus.FORBIDDEN,
+            error:
+              'Votre IP a été bloquée en raison de trop nombreuses tentatives échouées',
+            remainingAttempts: 0,
+          },
+          HttpStatus.FORBIDDEN,
+        );
       }
 
-      throw new HttpException({
-        status: HttpStatus.BAD_REQUEST,
-        error: "Erreur lors de l'envoi de l'email",
-        remainingAttempts,
-      }, HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: "Erreur lors de l'envoi de l'email",
+          remainingAttempts,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 }

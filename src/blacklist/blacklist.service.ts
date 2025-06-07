@@ -4,7 +4,8 @@ import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class BlacklistService {
   private blacklistedIps: Set<string> = new Set();
-  private failedAttempts: Map<string, { count: number; timestamp: number }> = new Map();
+  private failedAttempts: Map<string, { count: number; timestamp: number }> =
+    new Map();
   private readonly MAX_FAILED_ATTEMPTS = 5;
   private readonly BLOCK_DURATION = 24 * 60 * 60 * 1000; // 24 heures en millisecondes
 
@@ -12,7 +13,7 @@ export class BlacklistService {
     // Charger les IPs bloquées depuis la configuration
     const blockedIps = this.configService.get<string>('BLOCKED_IPS');
     if (blockedIps) {
-      blockedIps.split(',').forEach(ip => this.blacklistedIps.add(ip.trim()));
+      blockedIps.split(',').forEach((ip) => this.blacklistedIps.add(ip.trim()));
     }
   }
 
@@ -22,7 +23,7 @@ export class BlacklistService {
 
   addToBlacklist(ip: string): void {
     this.blacklistedIps.add(ip);
-    // Ici, vous pourriez implémenter la persistance dans une base de données
+    // If necessary, you can implement a database to store the blocked IPs
   }
 
   removeFromBlacklist(ip: string): void {
@@ -60,7 +61,7 @@ export class BlacklistService {
   getFailedAttempts(ip: string): number {
     const attempt = this.failedAttempts.get(ip);
     if (!attempt) return 0;
-    
+
     // Réinitialiser si plus de 24h
     if (Date.now() - attempt.timestamp > this.BLOCK_DURATION) {
       this.failedAttempts.delete(ip);
@@ -69,4 +70,4 @@ export class BlacklistService {
 
     return attempt.count;
   }
-} 
+}

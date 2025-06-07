@@ -18,12 +18,12 @@ import { BlacklistGuard } from './blacklist/blacklist.guard';
     ThrottlerModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => ([
+      useFactory: (config: ConfigService) => [
         {
           ttl: 60000, // Time window (1 minute)
           limit: 20, // Max 20 requests per IP per minute
         },
-      ]),
+      ],
     }),
 
     // Module de liste noire
