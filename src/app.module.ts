@@ -27,13 +27,17 @@ import { ContactModule } from './contact/contact.module';
                 // Pas d'authentification pour MailHog
               }
             : {
-                // Configuration pour production
+                // Configuration pour IONOS en production
                 host: config.get<string>('MAIL_HOST'),
                 port: config.get<number>('MAIL_PORT'),
-                secure: false,
+                secure: false, // TLS
                 auth: {
                   user: config.get<string>('MAIL_USER'),
                   pass: config.get<string>('MAIL_PASSWORD'),
+                },
+                tls: {
+                  ciphers: 'SSLv3',
+                  rejectUnauthorized: false
                 },
               },
           defaults: {
