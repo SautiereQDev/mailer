@@ -10,6 +10,11 @@ A robust NestJS-based email service designed to handle contact form submissions.
 - **Docker Support**: Development and production Docker configurations
 - **Development Environment**: Includes MailHog for local email testing
 - **Production Ready**: Secure configuration for production deployment
+- **Advanced Security**:
+  - Rate limiting (20 requests/minute globally, 10 emails/minute per IP)
+  - IP Blacklisting (automatic and manual)
+  - DDoS protection
+  - Failed attempts monitoring
 
 ## 🛠 Tech Stack
 
@@ -37,12 +42,15 @@ Create a `.env` file in the root directory with the following variables:
 APPLICATION_PORT=3001
 
 # SMTP Configuration
-MAIL_HOST=your.smtp.server
+MAIL_HOST=smtp.ionos.fr
 MAIL_PORT=465
 MAIL_USER=your@email.com
 MAIL_PASSWORD=your_password
 MAIL_FROM_NAME="Your Name"
 MAIL_FROM_EMAIL=your@email.com
+
+# Security Configuration
+BLOCKED_IPS=1.2.3.4,5.6.7.8  # Comma-separated list of blocked IPs
 ```
 
 ## 🚀 Getting Started
@@ -80,27 +88,49 @@ POST /contact
 }
 ```
 
-## 📧 Email Template
+### Security Responses
 
-The service uses a professional email template that includes:
+```javascript
+// Rate Limit Exceeded
+{
+  "statusCode": 429,
+  "message": "ThrottlerException: Too Many Requests"
+}
 
-- Contact name and email
-- Company name (if provided)
-- Message content
-- Source of the contact form
-- Timestamp of submission
+// IP Blocked
+{
+  "status": 403,
+  "error": "Access denied: Your IP has been blocked due to suspicious activity",
+  "remainingAttempts": 0
+}
+
+// Failed Attempt
+{
+  "status": 400,
+  "error": "Erreur lors de l'envoi de l'email",
+  "remainingAttempts": 4 // Number of attempts remaining before IP block
+}
+```
 
 ## 🔒 Security Features
 
-- CORS protection
-- Input validation
-- SSL/TLS email encryption
-- Rate limiting (optional)
+- **Rate Limiting**:
+  - Global: 20 requests per minute
+  - Contact Form: 10 emails per minute per IP
+- **IP Blacklisting**:
+  - Manual: Via BLOCKED_IPS environment variable
+  - Automatic: After 5 failed attempts
+  - Block Duration: 24 hours
+- **Input Validation**:
+  - Data sanitization
+  - Required fields validation
+  - Email format validation
+- **CORS Protection**
+- **SSL/TLS Email Encryption**
 
 ## 🐳 Docker Configuration
 
 The project includes two Docker configurations:
-
 - `Dockerfile.dev`: Development environment with hot-reload
 - `Dockerfile.prod`: Production-optimized build
 
@@ -113,6 +143,10 @@ The project includes two Docker configurations:
 │   │   ├── dto/         # Data transfer objects
 │   │   ├── contact.service.ts
 │   │   └── contact.controller.ts
+│   ├── blacklist/       # IP blacklisting module
+│   │   ├── blacklist.service.ts
+│   │   ├── blacklist.guard.ts
+│   │   └── blacklist.module.ts
 │   └── app.module.ts
 ├── docker-compose.yml
 ├── Dockerfile.dev
