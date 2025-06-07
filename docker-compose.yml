@@ -8,7 +8,7 @@ services:
       dockerfile: Dockerfile.dev
     container_name: nestjs-mailer-dev
     ports:
-      - '3000:3000'
+      - '3001:3000'
     environment:
       # Chargement en local du .env ou variables directement ici
       - NODE_ENV=development
@@ -38,8 +38,7 @@ services:
       context: .
       dockerfile: Dockerfile.prod
     container_name: nestjs-mailer-prod
-    ports:
-      - '3000:3000'
+    network_mode: host
     environment:
       - NODE_ENV=production
       - MAIL_HOST=${MAIL_HOST}
