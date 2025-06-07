@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { ContactService } from './contact.service';
 import { ContactDto } from './dto/contact.dto';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller('contact')
 export class ContactController {
@@ -16,6 +17,7 @@ export class ContactController {
 
   @Post()
   @HttpCode(HttpStatus.OK)
+  @Throttle({ default: { ttl: 60000, limit: 10 } }) // Max 10 emails par IP par minute
   @UsePipes(
     new ValidationPipe({
       whitelist: true,
