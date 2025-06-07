@@ -15,6 +15,7 @@ export class ContactService {
   async sendContactEmail(contact: ContactDto): Promise<void> {
     const { nom, entreprise, email, message, source } = contact;
     const adminEmail = this.configService.get<string>('MAIL_FROM_EMAIL');
+    const fromName = this.configService.get<string>('MAIL_FROM_NAME');
 
     try {
       // Préparation du contexte
@@ -32,10 +33,10 @@ export class ContactService {
       }
 
       await this.mailerService.sendMail({
-        to: adminEmail, // L'email va à l'administrateur
-        from: `"${nom} via Formulaire de Contact" <${email}>`, // L'email apparaît comme venant du contact
-        replyTo: email, // Pour répondre directement au contact
-        subject: `Nouveau message de contact${entreprise ? ` - ${entreprise}` : ''} - ${source}`,
+        to: adminEmail, // Votre email
+        from: `"${fromName}" <${adminEmail}>`, // Utiliser l'adresse votre email pour se l'envoyer à soi même
+        replyTo: `"${nom}" <${email}>`, // Pour répondre directement au contact (email du client)
+        subject: `[Contact] ${nom}${entreprise ? ` - ${entreprise}` : ''} via ${source}`,
         template: 'contact',
         context,
       });

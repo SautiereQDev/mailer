@@ -28,17 +28,15 @@ import { ContactModule } from './contact/contact.module';
               }
             : {
                 // Configuration pour IONOS en production
-                host: config.get<string>('MAIL_HOST'),
-                port: config.get<number>('MAIL_PORT'),
-                secure: false, // TLS
+                host: 'smtp.ionos.fr',
+                port: 465,
+                secure: true,
                 auth: {
                   user: config.get<string>('MAIL_USER'),
                   pass: config.get<string>('MAIL_PASSWORD'),
                 },
-                tls: {
-                  ciphers: 'SSLv3',
-                  rejectUnauthorized: false
-                },
+                debug: true,
+                logger: true
               },
           defaults: {
             from: `"${config.get<string>('MAIL_FROM_NAME')}" <${config.get<string>('MAIL_FROM_EMAIL')}>`,
