@@ -6,6 +6,8 @@ import { join } from 'path';
 import { ContactModule } from './contact/contact.module';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { BlacklistModule } from './blacklist/blacklist.module';
+import { BlacklistGuard } from './blacklist/blacklist.guard';
 
 @Module({
   imports: [
@@ -23,6 +25,9 @@ import { APP_GUARD } from '@nestjs/core';
         },
       ]),
     }),
+
+    // Module de liste noire
+    BlacklistModule,
 
     // Configuration du module Mailer avec Handlebars pour les templates
     MailerModule.forRootAsync({
@@ -72,6 +77,10 @@ import { APP_GUARD } from '@nestjs/core';
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: BlacklistGuard,
     },
   ],
 })
