@@ -44,7 +44,7 @@ describe('ContactController', () => {
 
     const validContactDtoWithEntreprise: ContactDto = {
       ...validContactDto,
-      entreprise: 'Test Company',
+      company: 'Test Company',
     };
 
     it('should successfully send contact email and return success response', async () => {

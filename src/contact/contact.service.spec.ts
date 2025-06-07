@@ -51,17 +51,17 @@ describe('ContactService', () => {
 
     const contactDtoWithEntreprise: ContactDto = {
       ...baseContactDto,
-      entreprise: 'Test Company',
+      company: 'Test Company',
     };
 
     const contactDtoWithEmptyEntreprise: ContactDto = {
       ...baseContactDto,
-      entreprise: '',
+      company: '',
     };
 
     const contactDtoWithWhitespaceEntreprise: ContactDto = {
       ...baseContactDto,
-      entreprise: '   ',
+      company: '   ',
     };
 
     beforeEach(() => {
@@ -209,7 +209,7 @@ describe('ContactService', () => {
         email: 'jean.francois@example.com',
         message: 'Message with special chars: é, è, à, ç, ñ, 中文',
         source: 'https://example.com/path?param=value&other=123',
-        entreprise: 'Société & Co.',
+        company: 'Société & Co.',
       };
 
       await service.sendContactEmail(specialCharContactDto);

@@ -13,7 +13,7 @@ export class ContactService {
   ) {}
 
   async sendContactEmail(contact: ContactDto): Promise<void> {
-    const { nom, entreprise, email, message, source } = contact;
+    const { nom, company: entreprise, email, message, source } = contact;
     const adminEmail = this.configService.get<string>('MAIL_FROM_EMAIL');
     const fromName = this.configService.get<string>('MAIL_FROM_NAME');
 

@@ -15,7 +15,7 @@ export class ContactDto {
   @MaxLength(100, {
     message: "Le nom de l'entreprise ne peut excéder 100 caractères",
   })
-  entreprise?: string;
+  company?: string;
 
   @IsEmail({}, { message: "L'adresse e-mail n'est pas valide" })
   @IsNotEmpty({ message: "L'adresse e-mail est obligatoire" })
