@@ -26,7 +26,7 @@ export class ContactController {
 
   @Post()
   @HttpCode(HttpStatus.OK)
-  @Throttle({ default: { ttl: 60000, limit: 10 } }) // Max 10 emails par IP par minute
+  @Throttle({ default: { ttl: 60000, limit: 100 } }) // Max 10 emails par IP par minute
   @UsePipes(
     new ValidationPipe({
       whitelist: true,
