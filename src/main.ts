@@ -27,9 +27,9 @@ async function bootstrap() {
     logger.log(`Application environment: ${process.env.NODE_ENV}`);
     logger.log(
       `Mail configuration: ${JSON.stringify({
-        host: configService.get('MAIL_HOST'),
-        port: configService.get('MAIL_PORT'),
-        from: configService.get('MAIL_FROM_EMAIL'),
+        host: configService.get<string>('MAIL_HOST'),
+        port: configService.get<number>('MAIL_PORT'),
+        from: configService.get<string>('MAIL_FROM_EMAIL'),
       })}`,
     );
 
