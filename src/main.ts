@@ -1,8 +1,7 @@
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
-import { Logger } from '@nestjs/common';
 
 async function bootstrap() {
   const logger = new Logger('Bootstrap');
@@ -11,14 +10,6 @@ async function bootstrap() {
       logger: ['error', 'warn', 'debug', 'log', 'verbose'],
     });
     const configService = app.get(ConfigService);
-
-    // Configuration CORS
-    app.enableCors({
-      origin: '*',
-      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-      allowedHeaders: 'Content-Type, Accept, Authorization',
-      credentials: true,
-    });
 
     // Activation de la validation globale
     app.useGlobalPipes(
@@ -49,4 +40,5 @@ async function bootstrap() {
     throw error;
   }
 }
+
 bootstrap();
