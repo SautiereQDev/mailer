@@ -11,6 +11,12 @@ async function bootstrap() {
     });
     const configService = app.get(ConfigService);
 
+    // Configuration CORS
+    app.enableCors({
+      origin: 'https://quentinsautiere.com',
+      credentials: true,
+    });
+
     // Activation de la validation globale
     app.useGlobalPipes(
       new ValidationPipe({
@@ -23,13 +29,13 @@ async function bootstrap() {
 
     const port = configService.get<number>('APPLICATION_PORT') || 3001;
 
-    // Log de démarrage
+    // Log de démarrage avec typage correct
     logger.log(`Application environment: ${process.env.NODE_ENV}`);
     logger.log(
       `Mail configuration: ${JSON.stringify({
-        host: configService.get('MAIL_HOST'),
-        port: configService.get('MAIL_PORT'),
-        from: configService.get('MAIL_FROM_EMAIL'),
+        host: configService.get<string>('MAIL_HOST'),
+        port: configService.get<number>('MAIL_PORT'),
+        from: configService.get<string>('MAIL_FROM_EMAIL'),
       })}`,
     );
 
